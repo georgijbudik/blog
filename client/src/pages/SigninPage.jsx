@@ -9,16 +9,24 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Title from "../components/Title";
+import { useFormik } from "formik";
+import { signinSchema } from "../validationSchemas/signinSchema";
+
+const initialValues = {
+  email: "",
+  password: "",
+};
 
 export default function SignInPage() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+  const formik = useFormik({
+    initialValues,
+    validationSchema: signinSchema,
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
+
+  const { touched, errors } = formik;
 
   return (
     <Container component="main" maxWidth="xs">
@@ -40,26 +48,37 @@ export default function SignInPage() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={formik.handleSubmit}
+          noValidate
+          sx={{ mt: 1 }}
+        >
           <TextField
             margin="normal"
-            required
             fullWidth
             id="email"
             label="Email Address"
             name="email"
             autoComplete="email"
             autoFocus
+            onChange={formik.handleChange}
+            value={formik.values.email}
+            error={touched.email && Boolean(errors.email)}
+            helperText={touched.email && errors.email}
           />
           <TextField
             margin="normal"
-            required
             fullWidth
             name="password"
             label="Password"
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={formik.handleChange}
+            value={formik.values.password}
+            error={touched.password && Boolean(errors.password)}
+            helperText={touched.password && errors.password}
           />
           <Button
             type="submit"
@@ -71,7 +90,7 @@ export default function SignInPage() {
           </Button>
           <Grid container justifyContent={"center"}>
             <Grid item>
-              <Link href="/signup" variant="body2">
+              <Link href="/" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
