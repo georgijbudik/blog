@@ -53,6 +53,7 @@ export default function SignInPage() {
           onSubmit={formik.handleSubmit}
           noValidate
           sx={{ mt: 1 }}
+          autoComplete="off"
         >
           <TextField
             margin="normal"
@@ -60,7 +61,6 @@ export default function SignInPage() {
             id="email"
             label="Email Address"
             name="email"
-            autoComplete="email"
             autoFocus
             onChange={formik.handleChange}
             value={formik.values.email}
@@ -74,7 +74,6 @@ export default function SignInPage() {
             label="Password"
             type="password"
             id="password"
-            autoComplete="current-password"
             onChange={formik.handleChange}
             value={formik.values.password}
             error={touched.password && Boolean(errors.password)}

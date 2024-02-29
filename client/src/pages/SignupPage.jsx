@@ -29,12 +29,16 @@ export default function SignUpPage() {
     validationSchema: signupSchema,
     onSubmit: async ({ firstName, lastName, email, password }) => {
       try {
-        await axios.post(`http://localhost:3003/api/auth/signup`, {
-          firstName,
-          lastName,
-          email,
-          password,
-        });
+        const { data } = await axios.post(
+          `http://localhost:3003/api/auth/signup`,
+          {
+            firstName,
+            lastName,
+            email,
+            password,
+          }
+        );
+        localStorage.setItem("token", data.token);
         return navigate("/blog");
       } catch (error) {
         console.log(error.message);
@@ -65,11 +69,15 @@ export default function SignUpPage() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
+        <Box
+          component="form"
+          onSubmit={formik.handleSubmit}
+          sx={{ mt: 3 }}
+          autoComplete="off"
+        >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
-                autoComplete="given-name"
                 name="firstName"
                 fullWidth
                 id="firstName"
@@ -87,7 +95,6 @@ export default function SignUpPage() {
                 id="lastName"
                 label="Last Name"
                 name="lastName"
-                autoComplete="family-name"
                 onChange={formik.handleChange}
                 value={formik.values.lastName}
                 error={touched.lastName && Boolean(errors.lastName)}
@@ -100,7 +107,6 @@ export default function SignUpPage() {
                 id="email"
                 label="Email Address"
                 name="email"
-                autoComplete="email"
                 onChange={formik.handleChange}
                 value={formik.values.email}
                 error={touched.email && Boolean(errors.email)}
@@ -114,7 +120,6 @@ export default function SignUpPage() {
                 label="Password"
                 type="password"
                 id="password"
-                autoComplete="new-password"
                 onChange={formik.handleChange}
                 value={formik.values.password}
                 error={touched.password && Boolean(errors.password)}
