@@ -5,4 +5,6 @@ const router = express.Router();
 
 router.get("/", authenticate, getPosts);
 
-router.post("/add-post", authenticate, addPost);
+router.post("/add", authenticate, addPost);
+
+module.exports = router;

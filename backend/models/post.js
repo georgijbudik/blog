@@ -13,7 +13,13 @@ const postSchema = new Schema(
       required: [true, "Description is required"],
     },
     date: {
-      type: Date,
+      type: String,
+    },
+    userFirstName: {
+      type: String,
+    },
+    userLastName: {
+      type: String,
     },
     owner: {
       type: Schema.Types.ObjectId,
@@ -30,7 +36,7 @@ const Post = model("post", postSchema);
 const addSchema = Joi.object({
   title: Joi.string().required(),
   description: Joi.string(),
-  date: Joi.string().date().format("DD-MM-YYYY").utc(),
+  date: Joi.date().format("DD/MM/YYYY").utc(),
 });
 
 module.exports = {
